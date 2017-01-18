@@ -2,6 +2,6 @@ There are three types of scripts in this directory:
 
 **./Code/Functions_For_\*.R**: contain functions to be sourced
 
-**./Code/Analysis_\*.R**: implement analyses (to be followed in sequential order); scripts with suffixes (e.g., _UrbanRural) indicate sensitivity analysis
+**./Code/Analysis_\*.R**: implement analyses (to follow in sequential order); scripts with suffixes (e.g., _UrbanRural) indicate sensitivity analysis
 
 **./Code/Figure_\*.R**: create *.pdf* figures, stored in **./Figures/**
