@@ -156,6 +156,7 @@ for(i in 1:nrow(codes)) ICC_restrict_to_3levels(i=i, binned_survey_age=24)
 ################################################################################
 
 # To tabulate ICC
+
 ICC_table <- NULL
 
 binned_survey_age <- 24
@@ -218,5 +219,83 @@ vars <- as.data.frame(summary(model)[13][[1]])$vcov
 
 ICC <- round(vars/sum(vars), 4)
 print(c(ICC[(length(ICC)-1):1], ICC[length(ICC)]))
+
+################################################################################
+
+# To tabulate bootstrap CIs for ICCs: by country
+
+# Loop over the countries
+for(i in 1:nrow(codes)) {
+
+	age <- 24
+	load(paste0("./Results/ICC/", codes$DHS_code[i], "_", age, "m_3LevelsMax.RData"))
+
+	# Function to estimate ICC, if max Adm==3
+	calc.icc_maxAdm3 <- function(y) {
+	
+		sumy <- summary(y)
+		c(sumy$varcor$adm1, sumy$varcor$adm2, sumy$varcor$adm3, sumy$sigma^2)/sum(c(sumy$varcor$adm1, sumy$varcor$adm2, sumy$varcor$adm3, sumy$sigma^2))
+	
+	}
+	
+	# Function to estimate ICC, if max Adm==2
+	calc.icc_maxAdm2 <- function(y) {
+	
+		sumy <- summary(y)
+		c(sumy$varcor$adm1, sumy$varcor$adm2, sumy$sigma^2)/sum(c(sumy$varcor$adm1, sumy$varcor$adm2, sumy$sigma^2))
+	
+	}
+	
+	# Bootstrap CI with 1000 iterations
+	if(codes$max_ADM_level[i]>2) 
+		boot.icc <- bootMer(model, calc.icc_maxAdm3, nsim=1000)
+		
+	else 
+		boot.icc <- bootMer(model, calc.icc_maxAdm2, nsim=1000)
+
+	ICC_CI <- round(apply(boot.icc$t, 2, quantile, c(0.025, 0.975)), 4)
+
+	save(boot.icc, ICC_CI, file=paste0("./Results/ICC/", codes$DHS_code[i], "_", age, "m_3LevelsMax_ICC_CI.RData"))
+	
+}
+
+################################################################################
+
+# To obtain bootstrap CIs for ICCs: for the entire region
+
+grid_final_all <- NULL
+
+# Loop over the countries
+for(i in 1:nrow(codes)) {
+
+	# Load the ICC ouput
+	load(paste0("./Results/ICC/", codes$DHS_code[i], "_24m_3LevelsMax.RData"))
+
+	# Append to grid_final_all
+	grid_final_all$z <- c(grid_final_all$z, grid_final$z)
+	grid_final_all$country <- c(grid_final_all$country, grid_final$country_for_regional_analysis)
+	# grid_final_all$year <- c(grid_final_all$year, rep(as.character(codes$Year[i]), times=length(grid_final$z)))
+
+	rm(grid_final)
+	
+}
+
+# Save as data frame
+grid_final_all_df <- as.data.frame(grid_final_all)
+	
+# Run the model
+model <- lmer(z ~ 1 + (1|country), data=grid_final_all_df, REML=FALSE)
+
+# Function to estimate ICC of country
+calc.icc_regional <- function(y) {
+
+	sumy <- summary(y)
+	(sumy$varcor$country[1]) / (sumy$varcor$country[1] + sumy$sigma^2)
+
+}
+
+# Bootstrap CI with 1000 iterations
+boot.icc <- bootMer(model, calc.icc_regional, nsim=1000)
+quantile(boot.icc$t, c(0.025, 0.975))
 
 ################################################################################
