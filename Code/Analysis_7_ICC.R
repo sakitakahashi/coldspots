@@ -51,7 +51,7 @@ ICC_restrict_to_3levels <- function(i, binned_survey_age) {
 	ID_finest <- paste0("ID_", max_ADM_level)
 	
 	# How many different polygons are there in this data set?
-	print(length(dat_finest@data[,ID_finest]))
+	# print(length(dat_finest@data[,ID_finest]))
 
 	for(j in 1:length(dat_finest@data[,ID_finest])) {
 	
@@ -67,7 +67,7 @@ ICC_restrict_to_3levels <- function(i, binned_survey_age) {
 	
 	}
 	
-	print(table(rowSums(grid_tmp[,4:ncol(grid_tmp)])))
+	# print(table(rowSums(grid_tmp[,4:ncol(grid_tmp)])))
 
 	# Plot it
 	# windows()
@@ -130,15 +130,13 @@ ICC_restrict_to_3levels <- function(i, binned_survey_age) {
 	while(max_ADM_level_placeholder>0) {
 		grid_final[,paste0("adm", max_ADM_level_placeholder-1)] <- adm_key[match(grid_final[,paste0("adm", max_ADM_level)], adm_key[,ID_finest]), paste0("ID_", max_ADM_level_placeholder-1)]
 		max_ADM_level_placeholder <- max_ADM_level_placeholder-1
-		print(max_ADM_level_placeholder)
+		# print(max_ADM_level_placeholder)
 	}
 	
 	# Fit a random intercepts model to this
 	if(max_ADM_level==2) model <- lmer(z ~ 1 + (1|adm1) + (1|adm2), data=grid_final, REML=FALSE)
 	else if(max_ADM_level==3) model <- lmer(z ~ 1 + (1|adm1) + (1|adm2) + (1|adm3), data=grid_final, REML=FALSE)
 	
-	print(summary(model))
-
 	# Extract the intra-class correlations (and plot them)
 	varnames <- as.data.frame(summary(model)[13][[1]])$grp
 	vars <- as.data.frame(summary(model)[13][[1]])$vcov
@@ -203,7 +201,6 @@ for(i in 1:nrow(codes)) {
 	grid_final_all$country <- c(grid_final_all$country, grid_final$country_for_regional_analysis)
 	# grid_final_all$year <- c(grid_final_all$year, rep(as.character(codes$Year[i]), times=length(grid_final$z)))
 
-	print(i)
 	rm(grid_final)
 	
 }
@@ -213,7 +210,7 @@ grid_final_all_df <- as.data.frame(grid_final_all)
 	
 # Run the model
 model <- lmer(z ~ 1 + (1|country), data=grid_final_all_df, REML=FALSE)
-print(summary(model))
+# print(summary(model))
 
 # Extract the intra-class correlations
 varnames <- as.data.frame(summary(model)[13][[1]])$grp

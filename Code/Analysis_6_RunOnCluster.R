@@ -898,7 +898,6 @@ getPeopleMap_noSubSIA <- function(lower_age, upper_age, i) {
 	# Convert back to SPDF, and add a new column for the ADJUSTED number of unvaccinated people between [lower_age, upper_age] months of age, which we call 'dummy' 	
 	g <- as(g, "SpatialPolygonsDataFrame")	
 	g$dummy <- grid_tmp_lt5y$z * area
-	print(summary(g$dummy))
 	
 	# Save the SPDF as a data.frame to plot
 	g@data$id <- rownames(g@data)
