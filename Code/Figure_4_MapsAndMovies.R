@@ -15,8 +15,8 @@ library(raster)
 library(plyr)
 
 ## Source code for analysis
-source("./Code/Functions_For_Analysis.R")
-source("./Code/Functions_For_Maps.R")
+source("./Code/FunctionsForAnalysis.R")
+source("./Code/FunctionsForMaps.R")
 
 ## Read in the master list of country codes
 codes <- as.data.frame(read.csv("./Data/Master_List.csv"))

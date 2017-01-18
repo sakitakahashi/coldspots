@@ -4,7 +4,7 @@ library(RColorBrewer)
 library(ggplot2)
 
 # Source code for analysis
-source("./Code/Functions_For_Analysis.R")
+source("./Code/FunctionsForAnalysis.R")
 
 # Read in the master list of country codes
 codes <- as.data.frame(read.csv("./Data/Master_List.csv"))
