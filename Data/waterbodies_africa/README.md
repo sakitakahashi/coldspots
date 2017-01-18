@@ -1,1 +1,1 @@
-Files are available for download from http://www.fao.org/geonetwork/srv/en/metadata.show%3Fid=281%26currTab=summary. This directory should contain 7 files named **waterbodies_africa**, with the following extensions: .axl, .dbf, .prj, .sbn, .sbx, .shp, and .shx.
+Files are available for download from http://www.fao.org/geonetwork/srv/en/metadata.show%3Fid=281%26currTab=summary. This directory should contain 7 files named **waterbodies_africa**, with the following extensions: *.axl*, *.dbf*, *.prj*, *.sbn*, *.sbx*, *.shp*, and *.shx*.
