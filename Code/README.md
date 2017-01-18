@@ -4,4 +4,4 @@ There are three types of scripts in this directory:
 
 **./Code/Analysis_\*.R**: implement analyses (to follow in sequential order); scripts with suffixes (e.g., _UrbanRural) indicate sensitivity analysis
 
-**./Code/Figure_\*.R**: create *.pdf* figures, stored in **./Figures/**
+**./Code/Figure_\*.R**: create *.pdf* figures, stored in **./Figures/** (or *.png* figures, stored in **./Movies/**)
