@@ -1,0 +1,1 @@
+The .png figures created by code in ./Code/Figure_4_Maps_Movies.R will accumulate here. The .png files then need to be stitched together in order to create a .gif movie (e.g., using http://gifmaker.me/).
