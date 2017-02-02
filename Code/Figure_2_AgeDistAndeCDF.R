@@ -23,7 +23,7 @@ codes <- as.data.frame(read.csv("./Data/Master_List.csv"))
 load("./Results/AgeDistribution/All_countries.RData")
 
 pdf("./Figures/AgeDistribution.pdf", height=8, width=10)
-tmp <- ggplot(dat_AgeDist, aes(AgeDist)) + geom_histogram(bins=60, col="slategray", fill="slategray3", alpha=0.2) + scale_x_continuous(breaks=c(6,12,24,36,48,60))   
+tmp <- ggplot(dat_AgeDist, aes(AgeDist)) + geom_histogram(bins=55, col="slategray", fill="slategray3", alpha=0.2) + scale_x_continuous(breaks=c(6,12,24,36,48,60))   
 tmp + facet_wrap(~country, scales="free", nrow=3) + theme_bw() +
 theme(axis.title.x=element_blank(), axis.title.y=element_blank(), 
 	  panel.grid.major=element_blank(),
