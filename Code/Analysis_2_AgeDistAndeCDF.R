@@ -75,11 +75,12 @@ for(i in 1:nrow(codes)) {
 
 	for(j in 1:length(all_SIAs)) {
 	
-		# Min and max ages of eligibility for the SIA
-		ages <- dataInd_country$survey_age_ub_mos[dataInd_country$dob_ub %in% seq(as.Date(dataSIA_country$dob_youngest[j]), as.Date(dataSIA_country$dob_oldest[j]), by="-1 day")]
-		SIA_lb[j] <- min(ages)
-		SIA_ub[j] <- max(ages)
-	
+		# Min and max binned_survey_age for the SIA, given eligible
+		eligible_ages <- dataInd_country[which(dataInd_country[,all_SIAs[j]]==1),"binned_survey_age"]
+		
+		SIA_lb[j] <- min(eligible_ages)-0.2 # For plotting
+		SIA_ub[j] <- max(eligible_ages)
+		
 		# National or sub-national?
 		if(dataSIA_country[j,"Campaign_name"] %in% which_SIAs_subnational)
 			SIA_national[j] <- 0
