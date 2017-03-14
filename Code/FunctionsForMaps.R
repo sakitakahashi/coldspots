@@ -6,7 +6,7 @@
 ## Spatial scale: single country
 ## MeanOrSE: "Mean", "SE"
 
-getSmoothedMap_noSubSIA_Single <- function(Country, binned_survey_age, MeanOrSE="Mean", deltaSEfrom12=TRUE) {
+getSmoothedMap_noSubSIA_Single <- function(Country, binned_survey_age, MeanOrSE="Mean", deltaSEfrom12=TRUE, GreenMagentaColorScale=TRUE) {
 	
 	# Get the rest
 	i <- as.numeric(rownames(codes))[which(Country==codes$Country)]
@@ -36,18 +36,37 @@ getSmoothedMap_noSubSIA_Single <- function(Country, binned_survey_age, MeanOrSE=
 	
 		# Legend name
 		legend_name <- substitute(paste("Mean at ", binned_survey_age, "m"), list(binned_survey_age=binned_survey_age))
-						  
-		tmp <- tmp + 
-		geom_polygon(data=g_df, mapping=aes(x=long, y=lat, group=group, fill=plogis(g_df[,which_data]))) +
-		geom_contour(data=grid_tmp_lt5y, mapping=aes(x=long, y=lat, z=plogis(grid_tmp_lt5y[,which_data])), size=0.1, breaks=seq(0,1,by=0.05), colour="gray50") +
-		scale_fill_gradientn(name=legend_name, 
-							 limits=c(0,1), 	
-							 breaks=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
-							 values=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
-							 colours=brewer.pal(10, "RdYlGn")) +
-		geom_polygon(data=adm0, aes(x=long, y=lat, z=group), colour="gray40", fill=NA, cex=0.25) +
-		guides(fill=guide_colorbar(barwidth=2, barheight=20))
-				
+		
+		if(GreenMagentaColorScale==TRUE) {
+		
+			tmp <- tmp + 
+			geom_polygon(data=g_df, mapping=aes(x=long, y=lat, group=group, fill=plogis(g_df[,which_data]))) +
+			geom_contour(data=grid_tmp_lt5y, mapping=aes(x=long, y=lat, z=plogis(grid_tmp_lt5y[,which_data])), size=0.1, breaks=seq(0,1,by=0.05), colour="gray50") +
+			scale_fill_gradientn(name=legend_name, 
+								 limits=c(0,1), 	
+								 breaks=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+								 values=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+								 colours=c('#8e0152','#c51b7d','#de77ae','#f1b6da','#fde0ef','#e6f5d0','#b8e186','#7fbc41','#4d9221','#276419')) +
+			geom_polygon(data=adm0, aes(x=long, y=lat, z=group), colour="gray40", fill=NA, cex=0.25) +
+			guides(fill=guide_colorbar(barwidth=2, barheight=20))
+		
+		}
+		
+		else {
+		
+			tmp <- tmp + 
+			geom_polygon(data=g_df, mapping=aes(x=long, y=lat, group=group, fill=plogis(g_df[,which_data]))) +
+			geom_contour(data=grid_tmp_lt5y, mapping=aes(x=long, y=lat, z=plogis(grid_tmp_lt5y[,which_data])), size=0.1, breaks=seq(0,1,by=0.05), colour="gray50") +
+			scale_fill_gradientn(name=legend_name, 
+								 limits=c(0,1), 	
+								 breaks=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+								 values=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+								 colours=brewer.pal(10, "RdYlGn")) +
+			geom_polygon(data=adm0, aes(x=long, y=lat, z=group), colour="gray40", fill=NA, cex=0.25) +
+			guides(fill=guide_colorbar(barwidth=2, barheight=20))
+		
+		}
+
 	}
 	
 	# For a map of SEs:
@@ -126,7 +145,7 @@ getSmoothedMap_noSubSIA_Single <- function(Country, binned_survey_age, MeanOrSE=
 ## MeanOrSE: "Mean", "SE"
 ## Note: this code is also used to make a movie
 
-getSmoothedMap_noSubSIA <- function(binned_survey_age, MeanOrSE="Mean", deltaSEfrom12=TRUE, movie=FALSE) {
+getSmoothedMap_noSubSIA <- function(binned_survey_age, MeanOrSE="Mean", deltaSEfrom12=TRUE, GreenMagentaColorScale=TRUE, movie=FALSE) {
 
 	# For plot
 	tmp <- ggplot()
@@ -170,15 +189,31 @@ getSmoothedMap_noSubSIA <- function(binned_survey_age, MeanOrSE="Mean", deltaSEf
 		# Legend name
 		legend_name <- substitute(paste("Mean at ", binned_survey_age, "m"), list(binned_survey_age=binned_survey_age))
 
-		tmp <- tmp + 
+		if(GreenMagentaColorScale==TRUE) {
+
+			tmp <- tmp + 
+			geom_polygon(data=g_df_all, mapping=aes(x=long, y=lat, group=group_final, fill=plogis(g_df_all[,which_data]))) + 
+			scale_fill_gradientn(name=legend_name, 
+									 limits=c(0,1), 	
+									 breaks=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+									 values=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
+									 colours=c('#8e0152','#c51b7d','#de77ae','#f1b6da','#fde0ef','#e6f5d0','#b8e186','#7fbc41','#4d9221','#276419')) +
+			guides(fill=guide_colorbar(barwidth=2, barheight=20))
+		}
+		
+		else {
+		
+			tmp <- tmp + 
 			geom_polygon(data=g_df_all, mapping=aes(x=long, y=lat, group=group_final, fill=plogis(g_df_all[,which_data]))) + 
 			scale_fill_gradientn(name=legend_name, 
 									 limits=c(0,1), 	
 									 breaks=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
 									 values=c(0, 0.5, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
 									 colours=brewer.pal(10, "RdYlGn")) +					 
-			guides(fill=guide_colorbar(barwidth=2, barheight=20))
-
+			guides(fill=guide_colorbar(barwidth=2, barheight=20))		
+		
+		}
+		
 		# Add the contour lines
 		for(i in 1:nrow(codes)) {
 			
@@ -807,7 +842,7 @@ getSmoothedMap_noSubSIA_Coldspots_Prevalence_Pop <- function(lower_age, upper_ag
 	g_df_all$lt5y_mult <- ifelse(g_df_all_2$lt5y < cutoff_popsize, 0, 1)
 	
 	# Legend name
-	legend_name <- paste("Coldspot prevalence\n", lower_age, "-", upper_age, "m\n", "Threshold: ", cutoff_popsize, sep="")
+	legend_name <- paste("Coldspot\nprevalence\n", lower_age, "-", upper_age, "m\n", "Min: ", cutoff_popsize, sep="")
 		
 	# Plot
 	tmp <- tmp + geom_polygon(data=g_df_all, mapping=aes(x=long, y=lat, group=group_final, fill=coverage_at_cutoff_age * lt5y_mult)) + scale_fill_gradient(name=legend_name, limits=c(0,1), low="white", high="red", na.value="green") + guides(fill=guide_colorbar(barwidth=2, barheight=10))
